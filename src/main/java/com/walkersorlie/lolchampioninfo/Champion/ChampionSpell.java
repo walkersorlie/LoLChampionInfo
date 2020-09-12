@@ -1,5 +1,5 @@
 
-package com.walkersorlie.lolchampioninfo;
+package com.walkersorlie.lolchampioninfo.Champion;
 
 import java.util.Objects;
 
@@ -65,7 +65,7 @@ public class ChampionSpell {
 //        String abilityLetter = id.substring(id.length() - 2, id.length() - 1);
         char letter = id.charAt(id.length() - 1);
         String newId = id.substring(0, id.length() - 2) + " " + letter;
-        return "ChampionSpell{" + newId + ", " + name + '}';
+        return "Champion spell" + newId + ", " + name;
     }
     
     

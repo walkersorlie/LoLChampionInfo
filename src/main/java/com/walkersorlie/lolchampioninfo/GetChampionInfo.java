@@ -37,8 +37,6 @@ public class GetChampionInfo {
          BufferedReader responseReader = new BufferedReader(new InputStreamReader(httpCon.getInputStream()));
          try {            
             String response = responseReader.lines().collect(Collectors.joining());
-
-            System.out.println(response);
             
             return response;    
          }
@@ -57,6 +55,6 @@ public class GetChampionInfo {
         if (name.isEmpty() || name.equals("Enter champion name"))
             return "";
         else
-            return name.trim().toLowerCase().substring(0, 1).toUpperCase() + name.substring(1) + ".json";
+            return name.trim().substring(0, 1).toUpperCase() + name.substring(1).toLowerCase() + ".json";
     }
 }

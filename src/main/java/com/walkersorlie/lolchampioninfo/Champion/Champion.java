@@ -1,6 +1,8 @@
 
-package com.walkersorlie.lolchampioninfo;
+package com.walkersorlie.lolchampioninfo.Champion;
 
+import com.walkersorlie.lolchampioninfo.Deserializers.ChampionDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -9,18 +11,19 @@ import java.util.Objects;
  *
  * @author Walker Sorlie
  */
+@JsonDeserialize(using = ChampionDeserializer.class)
 public class Champion {
     private String id;
     private long key;
     private String name;
     private List<String> allyTips;
     private List<String> enemyTips;
-    private List<Integer> stats;
+    private ChampionStats stats;
     
     private Map<String, ChampionSpell> spells;
     private Map<String, String> passive;
 
-    public Champion(String id, long key, String name, List<String> allyTips, List<String> enemyTips, List<Integer> stats, Map<String, ChampionSpell> spells, Map<String, String> passive) {
+    public Champion(String id, long key, String name, List<String> allyTips, List<String> enemyTips, ChampionStats stats, Map<String, ChampionSpell> spells, Map<String, String> passive) {
         this.id = id;
         this.key = key;
         this.name = name;
@@ -51,7 +54,7 @@ public class Champion {
         return enemyTips;
     }
 
-    public List<Integer> getStats() {
+    public ChampionStats getStats() {
         return stats;
     }
 
@@ -94,7 +97,7 @@ public class Champion {
 
     @Override
     public String toString() {
-        return "Champion{" + name + '}';
+        return "Champion: " + name;
     }
     
     
