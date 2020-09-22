@@ -13,6 +13,8 @@ import java.util.Objects;
  */
 @JsonDeserialize(using = ChampionDeserializer.class)
 public class Champion {
+    
+    public static int NUMBER_OF_FIELDS = 8;
     private String id;
     private long key;
     private String name;
