@@ -5,6 +5,7 @@
  */
 package com.walkersorlie.lolchampioninfo;
 
+import com.walkersorlie.lolchampioninfo.TableModels.ChampionTableModel;
 import com.walkersorlie.lolchampioninfo.Champion.Champion;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -139,17 +140,24 @@ public class MainPageUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
-        // TODO add your handling code here:
+        displayChampionTableInfo();
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
+        displayChampionTableInfo();
+    }//GEN-LAST:event_submitButtonActionPerformed
+    
+    
+    private void displayChampionTableInfo() {
         try {
             GetChampionInfo champ = new GetChampionInfo(searchField.getText());
             String response = champ.sendGet();
-        
+
             Champion champion = new ObjectMapper().readValue(response, Champion.class);
             System.out.println(champion.toString() + champion.getKey());
-            
+
+            championTableInfo.setModel(new ChampionTableModel(champion));
+
         } catch (ProtocolException ex) {
             Logger.getLogger(MainPageUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -157,8 +165,7 @@ public class MainPageUI extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(MainPageUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_submitButtonActionPerformed
-
+    }
     /**
      * @param args the command line arguments
      */

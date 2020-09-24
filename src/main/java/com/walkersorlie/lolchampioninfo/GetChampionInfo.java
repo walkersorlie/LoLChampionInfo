@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
-import java.net.URI;
 import java.net.URL;
 import java.util.stream.Collectors;
 
@@ -42,9 +41,6 @@ public class GetChampionInfo {
          }
         
          finally {
-             if (responseReader != null) {
-                 responseReader.close();
-             }
              if (httpCon != null) {
                  httpCon.disconnect();
              }
