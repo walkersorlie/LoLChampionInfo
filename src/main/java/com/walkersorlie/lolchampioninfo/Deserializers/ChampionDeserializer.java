@@ -54,7 +54,8 @@ public class ChampionDeserializer extends StdDeserializer<Champion> {
         ChampionStats stats = new ObjectMapper().readValue(champ.toString(), ChampionStats.class);
         
         Map<String, ChampionSpell> spells = new HashMap<>(7);
-        Map<String, String> passive = new HashMap<>(5);
+//        Map<String, String> passive = new HashMap<>(5);
+        String[] passive;
         
         Iterator allyItr = champ.get("allytips").iterator();
         while(allyItr.hasNext()) {
@@ -78,7 +79,8 @@ public class ChampionDeserializer extends StdDeserializer<Champion> {
         }
         
         JsonNode passiveNode = champ.get("passive");
-        passive.put(passiveNode.get("name").asText(), passiveNode.get("description").asText());
+//        passive.put(passiveNode.get("name").asText(), passiveNode.get("description").asText());
+        passive = new String[] {passiveNode.get("name").asText(), passiveNode.get("description").asText()};
 
         return new Champion(id, key, name, allyTips, enemyTips, stats, spells, passive);
     }

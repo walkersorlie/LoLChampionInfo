@@ -10,129 +10,130 @@ import com.walkersorlie.lolchampioninfo.Deserializers.ChampionStatsDeserializer;
  */
 @JsonDeserialize(using = ChampionStatsDeserializer.class)
 public class ChampionStats {
-    private double hp;
-    private double hpperlevel;
-    private double mp;
-    private double mpperlevel;
-    private double movespeed;
-    private double armor;
-    private double armorperleve;
-    private double spellblock;
-    private double spellblockperlevel;
-    private double attackrange;
-    private double hpregen;
-    private double hpregenperlevel;
-    private double mpregen;
-    private double mpregenperlevel;
-    private double crit;
-    private double critperleve;
-    private double attackdamage;
-    private double attackdamageperlevel;
-    private double attackspeedperlevel;
-    private double attackspeed;
+    private final double hp;
+    private final double hpPerLevel;
+    private final double mp;
+    private final double mpPerLevel;
+    private final double moveSpeed;
+    private final double armor;
+    private final double armorPerLeveL;
+    private final double spellBlock;
+    private final double spellBlockPerLevel;
+    private final double attackRange;
+    private final double hpRegen;
+    private final double hpRegenPerLevel;
+    private final double mpRegen;
+    private final double mpRegenPerLevel;
+    private final double crit;
+    private final double critPerLeveL;
+    private final double attackDamage;
+    private final double attackDamagePerLevel;
+    private final double attackspeedPerLevel;
+    private final double attackSpeed;
 
     public ChampionStats(double hp, double hpperlevel, double mp, double mpperlevel, double movespeed, double armor, double armorperleve, double spellblock, double spellblockperlevel, double attackrange, double hpregen, double hpregenperlevel, double mpregen, double mpregenperlevel, double crit, double critperleve, double attackdamage, double attackdamageperlevel, double attackspeedperlevel, double attackspeed) {
         this.hp = hp;
-        this.hpperlevel = hpperlevel;
+        this.hpPerLevel = hpperlevel;
         this.mp = mp;
-        this.mpperlevel = mpperlevel;
-        this.movespeed = movespeed;
+        this.mpPerLevel = mpperlevel;
+        this.moveSpeed = movespeed;
         this.armor = armor;
-        this.armorperleve = armorperleve;
-        this.spellblock = spellblock;
-        this.spellblockperlevel = spellblockperlevel;
-        this.attackrange = attackrange;
-        this.hpregen = hpregen;
-        this.hpregenperlevel = hpregenperlevel;
-        this.mpregen = mpregen;
-        this.mpregenperlevel = mpregenperlevel;
+        this.armorPerLeveL = armorperleve;
+        this.spellBlock = spellblock;
+        this.spellBlockPerLevel = spellblockperlevel;
+        this.attackRange = attackrange;
+        this.hpRegen = hpregen;
+        this.hpRegenPerLevel = hpregenperlevel;
+        this.mpRegen = mpregen;
+        this.mpRegenPerLevel = mpregenperlevel;
         this.crit = crit;
-        this.critperleve = critperleve;
-        this.attackdamage = attackdamage;
-        this.attackdamageperlevel = attackdamageperlevel;
-        this.attackspeedperlevel = attackspeedperlevel;
-        this.attackspeed = attackspeed;
+        this.critPerLeveL = critperleve;
+        this.attackDamage = attackdamage;
+        this.attackDamagePerLevel = attackdamageperlevel;
+        this.attackspeedPerLevel = attackspeedperlevel;
+        this.attackSpeed = attackspeed;
     }
 
     public double getHp() {
         return hp;
     }
 
-    public double getHpperlevel() {
-        return hpperlevel;
+    public double getHpPerLevel() {
+        return hpPerLevel;
     }
 
     public double getMp() {
         return mp;
     }
 
-    public double getMpperlevel() {
-        return mpperlevel;
+    public double getMpPerLevel() {
+        return mpPerLevel;
     }
 
-    public double getMovespeed() {
-        return movespeed;
+    public double getMoveSpeed() {
+        return moveSpeed;
     }
 
     public double getArmor() {
         return armor;
     }
 
-    public double getArmorperleve() {
-        return armorperleve;
+    public double getArmorPerLeveL() {
+        return armorPerLeveL;
     }
 
-    public double getSpellblock() {
-        return spellblock;
+    public double getSpellBlock() {
+        return spellBlock;
     }
 
-    public double getSpellblockperlevel() {
-        return spellblockperlevel;
+    public double getSpellBlockPerLevel() {
+        return spellBlockPerLevel;
     }
 
-    public double getAttackrange() {
-        return attackrange;
+    public double getAttackRange() {
+        return attackRange;
     }
 
-    public double getHpregen() {
-        return hpregen;
+    public double getHpRegen() {
+        return hpRegen;
     }
 
-    public double getHpregenperlevel() {
-        return hpregenperlevel;
+    public double getHpRegenPerLevel() {
+        return hpRegenPerLevel;
     }
 
-    public double getMpregen() {
-        return mpregen;
+    public double getMpRegen() {
+        return mpRegen;
     }
 
-    public double getMpregenperlevel() {
-        return mpregenperlevel;
+    public double getMpRegenPerLevel() {
+        return mpRegenPerLevel;
     }
 
     public double getCrit() {
         return crit;
     }
 
-    public double getCritperleve() {
-        return critperleve;
+    public double getCritPerLeveL() {
+        return critPerLeveL;
     }
 
-    public double getAttackdamage() {
-        return attackdamage;
+    public double getAttackDamage() {
+        return attackDamage;
     }
 
-    public double getAttackdamageperlevel() {
-        return attackdamageperlevel;
+    public double getAttackDamagePerLevel() {
+        return attackDamagePerLevel;
     }
 
-    public double getAttackspeedperlevel() {
-        return attackspeedperlevel;
+    public double getAttackspeedPerLevel() {
+        return attackspeedPerLevel;
     }
 
-    public double getAttackspeed() {
-        return attackspeed;
+    public double getAttackSpeed() {
+        return attackSpeed;
     }
+
     
     
 }
