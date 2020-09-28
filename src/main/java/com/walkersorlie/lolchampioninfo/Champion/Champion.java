@@ -100,7 +100,5 @@ public class Champion {
     @Override
     public String toString() {
         return "Champion: " + name;
-    }
-    
-    
+    }     
 }

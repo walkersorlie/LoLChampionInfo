@@ -36,6 +36,11 @@ public class TipsTableModel extends AbstractTableModel {
     public int getColumnCount() {
         return columns.length;
     }
+    
+    @Override
+    public String getColumnName(int column) {
+        return columns[column];
+    }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -47,8 +52,10 @@ public class TipsTableModel extends AbstractTableModel {
             Iterator<Integer> itr = rows.keySet().iterator();
             while(itr.hasNext()) {
                 int index = itr.next();
-                if(rowIndex == index)
+                if(rowIndex == index) {
+                    System.out.println(index);
                     return index;
+                }                   
             }
         }
         

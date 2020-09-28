@@ -14,5 +14,5 @@ public enum ChampionAttributesEnum {
     ENEMYTIPS,
     STATS,    
     SPELLS,
-    PASSIVE; 
+    PASSIVE ;    
 }

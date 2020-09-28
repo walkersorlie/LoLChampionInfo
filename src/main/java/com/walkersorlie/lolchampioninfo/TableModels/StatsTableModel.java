@@ -12,7 +12,7 @@ import javax.swing.table.AbstractTableModel;
 public class StatsTableModel extends AbstractTableModel {
     
     private final EnumMap championStats = new EnumMap(ChampionStatsAttributeEnum.class);
-    private final String[] columns = {"Stat Name", "Value"};
+    private final String[] columns = {"Stat", "Value"};
     private final String[] rows = {ChampionStatsAttributeEnum.HP.toString(), ChampionStatsAttributeEnum.HP_PER_LEVEL.toString(), 
         ChampionStatsAttributeEnum.MP.toString(), ChampionStatsAttributeEnum.MP_PER_LEVEL.toString(), ChampionStatsAttributeEnum.MOVE_SPEED.toString(), 
         ChampionStatsAttributeEnum.ARMOR.toString(), ChampionStatsAttributeEnum.ARMOR_PER_LEVEL.toString(), ChampionStatsAttributeEnum.SPELL_BLOCK.toString(), 
@@ -53,6 +53,11 @@ public class StatsTableModel extends AbstractTableModel {
     @Override
     public int getColumnCount() {
         return columns.length;
+    }
+    
+    @Override
+    public String getColumnName(int column) {
+        return columns[column];
     }
 
     @Override
@@ -97,5 +102,4 @@ public class StatsTableModel extends AbstractTableModel {
             default: return "None";
         }  
     }
-
 }

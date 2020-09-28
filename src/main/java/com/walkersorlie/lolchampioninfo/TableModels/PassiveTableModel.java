@@ -1,7 +1,6 @@
 
 package com.walkersorlie.lolchampioninfo.TableModels;
 
-import java.util.HashMap;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -27,11 +26,24 @@ public class PassiveTableModel extends AbstractTableModel {
     public int getColumnCount() {
         return columns.length;
     }
+    
+    @Override
+    public String getColumnName(int column) {
+        return columns[column];
+    }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+        
+        /**
+         * Return passive name
+         */
         if(columnIndex == 0)
             return passive[0];
+        
+        /**
+         * Return passive description
+         */
         else
             return passive[1];         
     }

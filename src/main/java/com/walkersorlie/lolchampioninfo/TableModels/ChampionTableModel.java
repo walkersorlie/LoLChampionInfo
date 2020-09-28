@@ -3,22 +3,25 @@ package com.walkersorlie.lolchampioninfo.TableModels;
 
 import com.walkersorlie.lolchampioninfo.Champion.ChampionAttributesEnum;
 import com.walkersorlie.lolchampioninfo.Champion.Champion;
+import com.walkersorlie.lolchampioninfo.Champion.ChampionSpell;
+import com.walkersorlie.lolchampioninfo.Champion.ChampionStats;
 import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 
 public class ChampionTableModel extends AbstractTableModel {
 
-//    private final Champion champion;
     private final EnumMap championData = new EnumMap(ChampionAttributesEnum.class);
-    private final String[] columnNames =  {"Attribute", "Value"};
+    private final String[] columnNames =  {"Attribute"};
     private final String[] rowNames = {ChampionAttributesEnum.ID.toString(), ChampionAttributesEnum.KEY.toString(), ChampionAttributesEnum.NAME.toString(),
         ChampionAttributesEnum.ALLYTIPS.toString(), ChampionAttributesEnum.ENEMYTIPS.toString(), ChampionAttributesEnum.STATS.toString(), 
         ChampionAttributesEnum.SPELLS.toString(), ChampionAttributesEnum.PASSIVE.toString()};
 
-    public ChampionTableModel(Champion champion) {
-//        this.champion = champion;
-        
+    public ChampionTableModel(Champion champion) {        
         championData.put(ChampionAttributesEnum.ID, champion.getId());
         championData.put(ChampionAttributesEnum.KEY, champion.getKey());
         championData.put(ChampionAttributesEnum.NAME, champion.getName());
@@ -44,45 +47,56 @@ public class ChampionTableModel extends AbstractTableModel {
     }
 
     @Override
+    /**
+     * Not including 'ID', 'KEY', and 'NAME' fields, so subtract 3 from the total number of fields
+     */
     public int getRowCount() {
-        return Champion.NUMBER_OF_FIELDS;
-    }
-    
-    public Class getRowClass(int row) {
-        return getValueAt(row, 0).getClass();
+        return Champion.NUMBER_OF_FIELDS - 3;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-         
-         switch(columnIndex) {
-             case 0: {
-                 switch(rowIndex) {
-                     case 0: return ChampionAttributesEnum.ID;
-                     case 1: return ChampionAttributesEnum.KEY;
-                     case 2: return ChampionAttributesEnum.NAME;
-                     case 3: return ChampionAttributesEnum.ALLYTIPS;
-                     case 4: return ChampionAttributesEnum.ENEMYTIPS;
-                     case 5: return ChampionAttributesEnum.STATS;
-                     case 6: return ChampionAttributesEnum.SPELLS;
-                     case 7: return ChampionAttributesEnum.PASSIVE;
-                     default: return "None";
-                 }
-             }
-             case 1: {
-                 switch(rowIndex) {
-                    case 0: return championData.get(ChampionAttributesEnum.ID);
-                    case 1: return championData.get(ChampionAttributesEnum.KEY);
-                    case 2: return championData.get(ChampionAttributesEnum.NAME);
-                    case 3: return championData.get(ChampionAttributesEnum.ALLYTIPS);
-                    case 4: return championData.get(ChampionAttributesEnum.ENEMYTIPS);
-                    case 5: return championData.get(ChampionAttributesEnum.STATS);
-                    case 6: return championData.get(ChampionAttributesEnum.SPELLS);
-                    case 7: return championData.get(ChampionAttributesEnum.PASSIVE);
-                    default: return "None";
-                 }
-             }
-             default: return "None";
-         }   
+        switch(rowIndex) {
+           case 0: return ChampionAttributesEnum.ALLYTIPS;
+           case 1: return ChampionAttributesEnum.ENEMYTIPS;
+           case 2: return ChampionAttributesEnum.STATS;
+           case 3: return ChampionAttributesEnum.SPELLS;
+           case 4: return ChampionAttributesEnum.PASSIVE;
+           default: return "None";
+       }
+    }
+    
+    public TableModel getCellTableModel(int rowIndex, int columnIndex) {
+        TableModel tableModel;
+
+        switch(rowIndex) {
+            case 0: {
+                List<String> tips = (List)championData.get(ChampionAttributesEnum.ALLYTIPS);
+                tableModel = new TipsTableModel(tips);
+                break;
+            }
+            case 1: {
+                List<String> tips = (List)championData.get(ChampionAttributesEnum.ENEMYTIPS);
+                tableModel = new TipsTableModel(tips);
+                break;
+            }
+            case 2: {
+                ChampionStats stats = (ChampionStats)championData.get(ChampionAttributesEnum.STATS);
+                tableModel = new StatsTableModel(stats);
+                break;
+            }
+            case 3: {
+                Map<String, ChampionSpell> spells = (Map)championData.get(ChampionAttributesEnum.SPELLS);
+                tableModel = new SpellsTableModel(spells);
+                break;
+            }
+            case 4: {
+                String[] passive = (String[])championData.get(ChampionAttributesEnum.PASSIVE);
+                tableModel = new PassiveTableModel(passive);
+                break;
+            }
+            default: tableModel = new DefaultTableModel();
+        }
+        return tableModel;
     }
 }

@@ -7,16 +7,12 @@ package com.walkersorlie.lolchampioninfo;
 
 import com.walkersorlie.lolchampioninfo.TableModels.ChampionTableModel;
 import com.walkersorlie.lolchampioninfo.Champion.Champion;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.ProtocolException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -40,28 +36,17 @@ public class MainPageUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        championTableList = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         searchField = new javax.swing.JTextField();
         submitButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        championsListTable = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        championTableInfo = new javax.swing.JTable();
+        selectChampionAttributeTable = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        displayChampionAttributeTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        championTableList.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Champion"
-            }
-        ));
-        jScrollPane1.setViewportView(championTableList);
 
         searchField.setText("Search Champion...");
         searchField.addActionListener(new java.awt.event.ActionListener() {
@@ -77,27 +62,21 @@ public class MainPageUI extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(94, 94, 94)
-                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(187, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 26, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
+        championsListTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Champions"
+            }
+        ));
+        championsListTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(championsListTable);
 
-        championTableInfo.setModel(new javax.swing.table.DefaultTableModel(
+        selectChampionAttributeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
                 {null},
@@ -108,7 +87,74 @@ public class MainPageUI extends javax.swing.JFrame {
                 "Information"
             }
         ));
-        jScrollPane2.setViewportView(championTableInfo);
+        selectChampionAttributeTable.setCellSelectionEnabled(true);
+        selectChampionAttributeTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        selectChampionAttributeTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                selectChampionAttributeTableMousePressed(evt);
+            }
+        });
+        jScrollPane2.setViewportView(selectChampionAttributeTable);
+
+        displayChampionAttributeTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Name", "Values"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(displayChampionAttributeTable);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(53, 53, 53)
+                        .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(17, 17, 17))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(198, 198, 198))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(18, Short.MAX_VALUE))))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -116,23 +162,14 @@ public class MainPageUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
                 .addContainerGap())
         );
 
@@ -140,24 +177,40 @@ public class MainPageUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
-        displayChampionTableInfo();
+        displayChampionAttributeTable();
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        displayChampionTableInfo();
+        displayChampionAttributeTable();
     }//GEN-LAST:event_submitButtonActionPerformed
+
+    private void selectChampionAttributeTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectChampionAttributeTableMousePressed
+        javax.swing.JTable table = (javax.swing.JTable)evt.getSource();
+        int row = table.getSelectedRow();
+        int column = table.getSelectedColumn();
+        ChampionTableModel value = (ChampionTableModel)table.getModel();
+        
+        populateDisplayChampionAttributeTable(value.getCellTableModel(row, column));
+    }//GEN-LAST:event_selectChampionAttributeTableMousePressed
     
     
-    private void displayChampionTableInfo() {
+    private void displayChampionAttributeTable() {
         try {
             GetChampionInfo champ = new GetChampionInfo(searchField.getText());
             String response = champ.sendGet();
 
             Champion champion = new ObjectMapper().readValue(response, Champion.class);
-            System.out.println(champion.toString() + champion.getKey());
 
-            championTableInfo.setModel(new ChampionTableModel(champion));
+            selectChampionAttributeTable.setModel(new ChampionTableModel(champion));
+            
+//            TableInTableRenderer renderer = new TableInTableRenderer();
 
+//            for(int i = 0; i < selectChampionAttributeTable.getRowCount(); i++) {
+//                Object value = selectChampionAttributeTable.getValueAt(i, 1);
+//                javax.swing.JTable cell = (javax.swing.JTable)renderer.getTableCellRendererComponent(selectChampionAttributeTable, value, false, false, i, 1);
+//                selectChampionAttributeTable.setValueAt(cell, i, 1);          
+//            }
+            
         } catch (ProtocolException ex) {
             Logger.getLogger(MainPageUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -166,6 +219,12 @@ public class MainPageUI extends javax.swing.JFrame {
             Logger.getLogger(MainPageUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    private void populateDisplayChampionAttributeTable(TableModel tm) {
+        displayChampionAttributeTable.setModel(tm);
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -200,12 +259,14 @@ public class MainPageUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable championTableInfo;
-    private javax.swing.JTable championTableList;
+    private javax.swing.JTable championsListTable;
+    private javax.swing.JTable displayChampionAttributeTable;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField searchField;
+    private javax.swing.JTable selectChampionAttributeTable;
     private javax.swing.JButton submitButton;
     // End of variables declaration//GEN-END:variables
 }

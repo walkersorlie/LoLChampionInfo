@@ -27,6 +27,7 @@ public class TableInTableRenderer extends JTable implements TableCellRenderer  {
                 case 3: case 4: {
                     List<String> tips = (List)value;
                     TipsTableModel tableModel = new TipsTableModel(tips);
+                    System.out.println(tableModel.toString());
                     component = new JTable(tableModel);
                     break;
                 }

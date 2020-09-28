@@ -64,7 +64,7 @@ public class ChampionSpell {
     public String toString() {
 //        String abilityLetter = id.substring(id.length() - 2, id.length() - 1);
         char letter = id.charAt(id.length() - 1);
-        String newId = id.substring(0, id.length() - 2) + " " + letter;
+        String newId = id.substring(0, id.length() - 1) + " " + letter;
         return "Champion spell" + newId + ", " + name;
     }
     
