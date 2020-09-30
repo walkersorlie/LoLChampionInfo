@@ -1,6 +1,7 @@
 
 package com.walkersorlie.lolchampioninfo.TableModels;
 
+import com.walkersorlie.lolchampioninfo.Champion.ChampionStatsAttributeEnum;
 import com.walkersorlie.lolchampioninfo.Champion.ChampionStats;
 import java.util.EnumMap;
 import javax.swing.table.AbstractTableModel;

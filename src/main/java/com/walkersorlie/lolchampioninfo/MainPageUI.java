@@ -8,10 +8,16 @@ package com.walkersorlie.lolchampioninfo;
 import com.walkersorlie.lolchampioninfo.TableModels.ChampionTableModel;
 import com.walkersorlie.lolchampioninfo.Champion.Champion;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.walkersorlie.lolchampioninfo.Champion.MultiNameChampionsEnum;
+import com.walkersorlie.lolchampioninfo.Deserializers.ChampionsListDeserializer;
+import com.walkersorlie.lolchampioninfo.TableModels.ChampionsListTableModel;
 import java.io.IOException;
 import java.net.ProtocolException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 /**
@@ -25,6 +31,7 @@ public class MainPageUI extends javax.swing.JFrame {
      */
     public MainPageUI() {
         initComponents();
+        setChampionsListTableModel();
     }
 
     /**
@@ -38,7 +45,7 @@ public class MainPageUI extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         searchField = new javax.swing.JTextField();
-        submitButton = new javax.swing.JButton();
+        searchButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         championsListTable = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -55,25 +62,27 @@ public class MainPageUI extends javax.swing.JFrame {
             }
         });
 
-        submitButton.setText("Submit");
-        submitButton.addActionListener(new java.awt.event.ActionListener() {
+        searchButton.setText("Search");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                submitButtonActionPerformed(evt);
+                searchButtonActionPerformed(evt);
             }
         });
 
         championsListTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+
             },
             new String [] {
-                "Champions"
+
             }
         ));
         championsListTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        championsListTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                championsListTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(championsListTable);
 
         selectChampionAttributeTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -87,11 +96,10 @@ public class MainPageUI extends javax.swing.JFrame {
                 "Information"
             }
         ));
-        selectChampionAttributeTable.setCellSelectionEnabled(true);
         selectChampionAttributeTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         selectChampionAttributeTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                selectChampionAttributeTableMousePressed(evt);
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectChampionAttributeTableMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(selectChampionAttributeTable);
@@ -129,7 +137,7 @@ public class MainPageUI extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(53, 53, 53)
-                        .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
@@ -142,7 +150,7 @@ public class MainPageUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -175,33 +183,93 @@ public class MainPageUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    /**
+     * Initialize the championsListTable with its TableModel
+     */
+    private void setChampionsListTableModel() {
+        championsListTable.setRowSelectionAllowed(true);
+        ObjectMapper mapper = new ObjectMapper();
+	SimpleModule module = new SimpleModule();
+	module.addDeserializer(ArrayList.class, new ChampionsListDeserializer());
+	mapper.registerModule(module);
+        
+        try {
+            String response = NetworkRequest.sendGet("");
+            championsList = mapper.readValue(response, ArrayList.class);
+            championsListTable.setModel(new ChampionsListTableModel(championsList));
+            
+        } catch (ProtocolException ex) {
+            Logger.getLogger(MainPageUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MainPageUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(MainPageUI.class.getName()).log(Level.SEVERE, null, ex);
+        }   	 
+    }
+    
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
-        displayChampionAttributeTable();
+        displayChampionAttributeTable.setModel(new DefaultTableModel());
+        
+        String champion = searchField.getText();
+        String result = champion.trim();
+//        result = result.substring(0, 1).toUpperCase() + result.substring(1).toLowerCase();
+        result = MultiNameChampionsEnum.checkNameAndAliases(result.toLowerCase(), false);
+        
+        championsListTable.changeSelection(championsList.indexOf(result), 0, false, false);
+        displayChampionAttributeTable(champion);
     }//GEN-LAST:event_searchFieldActionPerformed
-
-    private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        displayChampionAttributeTable();
-    }//GEN-LAST:event_submitButtonActionPerformed
-
-    private void selectChampionAttributeTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectChampionAttributeTableMousePressed
+    
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        displayChampionAttributeTable(searchField.getText());
+    }//GEN-LAST:event_searchButtonActionPerformed
+    
+    /**
+     * Display the attributes for this specific Champion in the selectChampionAttributeTable
+     * @param evt 
+     */
+    private void championsListTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_championsListTableMouseClicked
+        javax.swing.JTable table = (javax.swing.JTable)evt.getSource();
+        int row = table.getSelectedRow();
+        int column = table.getSelectedColumn();
+        
+        displayChampionAttributeTable.setModel(new DefaultTableModel());
+        searchField.setText((String)table.getValueAt(row, column));     
+        
+        
+        ChampionsListTableModel value = (ChampionsListTableModel)table.getModel();
+        
+        displayChampionAttributeTable(value.getValueAt(row, column));
+    }//GEN-LAST:event_championsListTableMouseClicked
+    
+    /**
+     * Handle displaying the specific attribute table for the selected attribute
+     * @param evt 
+     */
+    private void selectChampionAttributeTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectChampionAttributeTableMouseClicked
         javax.swing.JTable table = (javax.swing.JTable)evt.getSource();
         int row = table.getSelectedRow();
         int column = table.getSelectedColumn();
         ChampionTableModel value = (ChampionTableModel)table.getModel();
         
         populateDisplayChampionAttributeTable(value.getCellTableModel(row, column));
-    }//GEN-LAST:event_selectChampionAttributeTableMousePressed
+    }//GEN-LAST:event_selectChampionAttributeTableMouseClicked
     
-    
-    private void displayChampionAttributeTable() {
+    /**
+     * Display the specific attribute table for the selected attribute
+     * @param championName 
+     */
+    private void displayChampionAttributeTable(String championName) {
         try {
-            GetChampionInfo champ = new GetChampionInfo(searchField.getText());
-            String response = champ.sendGet();
+            // Will do caching/database reading+writing here
+            String response = NetworkRequest.sendGet(championName);
 
             Champion champion = new ObjectMapper().readValue(response, Champion.class);
 
             selectChampionAttributeTable.setModel(new ChampionTableModel(champion));
+            selectChampionAttributeTable.changeSelection(0, 0, false, false);
+            ChampionTableModel value = (ChampionTableModel)selectChampionAttributeTable.getModel();
+            populateDisplayChampionAttributeTable(value.getCellTableModel(0, 0));
             
 //            TableInTableRenderer renderer = new TableInTableRenderer();
 
@@ -220,6 +288,10 @@ public class MainPageUI extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Populate the specific attribute table by setting the TableModel
+     * @param tm 
+     */
     private void populateDisplayChampionAttributeTable(TableModel tm) {
         displayChampionAttributeTable.setModel(tm);
     }
@@ -265,8 +337,10 @@ public class MainPageUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
     private javax.swing.JTable selectChampionAttributeTable;
-    private javax.swing.JButton submitButton;
     // End of variables declaration//GEN-END:variables
+    private ArrayList<String> championsList;
+
 }

@@ -53,7 +53,6 @@ public class TipsTableModel extends AbstractTableModel {
             while(itr.hasNext()) {
                 int index = itr.next();
                 if(rowIndex == index) {
-                    System.out.println(index);
                     return index;
                 }                   
             }
