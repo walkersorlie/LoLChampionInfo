@@ -7,7 +7,6 @@ import com.walkersorlie.lolchampioninfo.Champion.ChampionSpell;
 import com.walkersorlie.lolchampioninfo.Champion.ChampionStats;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -86,7 +85,9 @@ public class ChampionTableModel extends AbstractTableModel {
                 break;
             }
             case 3: {
-                Map<String, ChampionSpell> spells = (Map)championData.get(ChampionAttributesEnum.SPELLS);
+//                Map<String, ChampionSpell> spells = (Map)championData.get(ChampionAttributesEnum.SPELLS);
+//                tableModel = new SpellsTableModel(spells);
+                ChampionSpell[] spells = (ChampionSpell[])championData.get(ChampionAttributesEnum.SPELLS);
                 tableModel = new SpellsTableModel(spells);
                 break;
             }

@@ -2,9 +2,6 @@
 package com.walkersorlie.lolchampioninfo.TableModels;
 
 import com.walkersorlie.lolchampioninfo.Champion.ChampionSpell;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -13,16 +10,17 @@ import javax.swing.table.AbstractTableModel;
  */
 public class SpellsTableModel extends AbstractTableModel {
     
-    private final String[] columns = {"Spell", "Description"};
-    private final HashMap<String, ChampionSpell> spells;
+    private final String[] columns = {"Spell Letter", "Spell Name", "Description"};
+//    private final HashMap<String, ChampionSpell> spells;
+    private final ChampionSpell[] spells;
     
-    public SpellsTableModel(Map<String, ChampionSpell> spells) {
-        this.spells = (HashMap)spells;
+    public SpellsTableModel(ChampionSpell[] spells) {
+        this.spells = spells;
     }
     
     @Override
     public int getRowCount() {
-        return spells.size();
+        return spells.length;
     }
 
     @Override
@@ -39,113 +37,77 @@ public class SpellsTableModel extends AbstractTableModel {
     public String getValueAt(int rowIndex, int columnIndex) {
         String value = "";
         
-        /**
-         * Return the spell name
-         */
         if(columnIndex == 0) {
-            switch(rowIndex) {
+            switch (rowIndex) {
                 case 0: {
-                    Iterator<String> itr = spells.keySet().iterator();
-                    while(itr.hasNext()) {
-                        String spell = itr.next();
-                        char c = spell.charAt(spell.length() - 1);
-                        if(c ==  'Q')
-                            value = formatSpellName(spell);
-                    }
+                    value = "Q";
                     break;
                 }
                 case 1: {
-                    Iterator<String> itr = spells.keySet().iterator();
-                    while(itr.hasNext()) {
-                        String spell = itr.next();
-                        char c = spell.charAt(spell.length() - 1);
-                        if(c ==  'W')
-                            value = formatSpellName(spell);
-                    }
+                    value = "W";
                     break;
                 }
                 case 2: {
-                    Iterator<String> itr = spells.keySet().iterator();
-                    while(itr.hasNext()) {
-                        String spell = itr.next();
-                        char c = spell.charAt(spell.length() - 1);
-                        if(c ==  'E')
-                            value = formatSpellName(spell);
-                    }
+                    value = "E";
                     break;
                 }
                 case 3: {
-                    Iterator<String> itr = spells.keySet().iterator();
-                    while(itr.hasNext()) {
-                        String spell = itr.next();
-                        char c = spell.charAt(spell.length() - 1);
-                        if(c ==  'R')
-                            value = formatSpellName(spell);
-                    }
+                    value = "R";
+                    break;
+                }
+                
+            }
+        }
+        else if(columnIndex == 1) {
+            switch(rowIndex) {
+                case 0: {
+                    ChampionSpell spell = spells[0];
+                    value = spell.getName();
+                    break;
+                }
+                case 1: {
+                    ChampionSpell spell = spells[1];
+                    value = spell.getName();
+                    break;
+                }
+                case 2: {
+                    ChampionSpell spell = spells[2];
+                    value = spell.getName();
+                    break;
+                }
+                case 3: {
+                    ChampionSpell spell = spells[3];
+                    value = spell.getName();
                     break;
                 }
                 default: value = "None";
             }
         }
-        
-        /**
-         * Return the spell description
-         */
         else {
             switch(rowIndex) {
                 case 0: {
-                    Iterator<Map.Entry<String, ChampionSpell>> itr = spells.entrySet().iterator();
-                    while(itr.hasNext()) {
-                        Map.Entry<String, ChampionSpell> spell = itr.next();
-                        String key = spell.getKey();
-                        char c = key.charAt(key.length() - 1);
-                        if(c == 'Q')
-                            value = spell.getValue().getDescription();
-                    }
+                    ChampionSpell spell = spells[0];
+                    value = spell.getDescription();
                     break;
                 }
                 case 1: {
-                    Iterator<Map.Entry<String, ChampionSpell>> itr = spells.entrySet().iterator();
-                    while(itr.hasNext()) {
-                        Map.Entry<String, ChampionSpell> spell = itr.next();
-                        String key = spell.getKey();
-                        char c = key.charAt(key.length() - 1);
-                        if(c == 'W')
-                            value = spell.getValue().getDescription();
-                    }
+                    ChampionSpell spell = spells[1];
+                    value = spell.getDescription();
                     break;
                 }
                 case 2: {
-                    Iterator<Map.Entry<String, ChampionSpell>> itr = spells.entrySet().iterator();
-                    while(itr.hasNext()) {
-                        Map.Entry<String, ChampionSpell> spell = itr.next();
-                        String key = spell.getKey();
-                        char c = key.charAt(key.length() - 1);
-                        if(c == 'E')
-                            value = spell.getValue().getDescription();
-                    }
+                    ChampionSpell spell = spells[2];
+                    value = spell.getDescription();
                     break;
                 }
                 case 3: {
-                    Iterator<Map.Entry<String, ChampionSpell>> itr = spells.entrySet().iterator();
-                    while(itr.hasNext()) {
-                        Map.Entry<String, ChampionSpell> spell = itr.next();
-                        String key = spell.getKey();
-                        char c = key.charAt(key.length() - 1);
-                        if(c == 'R')
-                            value = spell.getValue().getDescription();
-                    }
+                    ChampionSpell spell = spells[3];
+                    value = spell.getDescription();
                     break;
                 }
                 default: value = "None";
-            }      
-        }
+            }
+        }     
         return value;
-    }
-    
-    private String formatSpellName(String id) {
-        char letter = id.charAt(id.length() - 1);
-        String newId = id.substring(0, id.length() - 1) + " " + letter;
-        return newId;
     }
 }

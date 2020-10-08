@@ -13,10 +13,8 @@ import com.walkersorlie.lolchampioninfo.Champion.ChampionSpell;
 import com.walkersorlie.lolchampioninfo.Champion.ChampionStats;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -53,7 +51,8 @@ public class ChampionDeserializer extends StdDeserializer<Champion> {
         List<String> enemyTips = new ArrayList<>();
         ChampionStats stats = new ObjectMapper().readValue(champ.toString(), ChampionStats.class);
         
-        Map<String, ChampionSpell> spells = new HashMap<>(7);
+//        Map<String, ChampionSpell> spells = new HashMap<>(7);
+        
         String[] passive;
         
         Iterator allyItr = champ.get("allytips").iterator();
@@ -69,13 +68,17 @@ public class ChampionDeserializer extends StdDeserializer<Champion> {
         }
         
         JsonNode spellsArray = champ.get("spells");
+        ArrayList<ChampionSpell> spellList = new ArrayList();
         Iterator spellsItr = spellsArray.iterator();
         while(spellsItr.hasNext()) {
             JsonNode index = (JsonNode) spellsItr.next();
             ChampionSpell spell = createSpell(index);
             
-            spells.put(spell.getId(), spell);
+//            spells.put(spell.getId(), spell);
+            spellList.add(spell);
         }
+        ChampionSpell[] spells = spellList.toArray(new ChampionSpell[spellList.size()]);
+        
         
         JsonNode passiveNode = champ.get("passive");
         passive = new String[] {passiveNode.get("name").asText(), passiveNode.get("description").asText()};

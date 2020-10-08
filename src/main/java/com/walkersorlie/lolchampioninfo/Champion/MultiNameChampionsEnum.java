@@ -233,20 +233,22 @@ public enum MultiNameChampionsEnum {
     public abstract String formatNameForUrl();
     public abstract ArrayList<String> getAliases();
     
-    public static final EnumMap MULTI_NAME_CHAMPIONS_ENUM_MAP = new EnumMap(MultiNameChampionsEnum.class) {{
-        put(MultiNameChampionsEnum.AURELIONSOL, MultiNameChampionsEnum.AURELIONSOL.getAliases());     
-        put(MultiNameChampionsEnum.DRMUNDO, MultiNameChampionsEnum.DRMUNDO.getAliases());
-        put(MultiNameChampionsEnum.JARVANIV, MultiNameChampionsEnum.JARVANIV.getAliases());
-        put(MultiNameChampionsEnum.KOGMAW, MultiNameChampionsEnum.KOGMAW.getAliases());
-        put(MultiNameChampionsEnum.LEESIN, MultiNameChampionsEnum.LEESIN.getAliases());
-        put(MultiNameChampionsEnum.MASTERYI, MultiNameChampionsEnum.MASTERYI.getAliases());
-        put(MultiNameChampionsEnum.MISSFORTUNE, MultiNameChampionsEnum.MISSFORTUNE.getAliases());
-        put(MultiNameChampionsEnum.MONKEYKING, MultiNameChampionsEnum.MONKEYKING.getAliases());
-        put(MultiNameChampionsEnum.REKSAI, MultiNameChampionsEnum.REKSAI.getAliases());
-        put(MultiNameChampionsEnum.TAHMKENCH, MultiNameChampionsEnum.TAHMKENCH.getAliases());
-        put(MultiNameChampionsEnum.TWISTEDFATE, MultiNameChampionsEnum.TWISTEDFATE.getAliases());
-        put(MultiNameChampionsEnum.XINZHAO, MultiNameChampionsEnum.XINZHAO.getAliases());
-    }};
+    public static final EnumMap MULTI_NAME_CHAMPIONS_ENUM_MAP = new EnumMap(MultiNameChampionsEnum.class) {
+        {
+            put(MultiNameChampionsEnum.AURELIONSOL, MultiNameChampionsEnum.AURELIONSOL.getAliases());     
+            put(MultiNameChampionsEnum.DRMUNDO, MultiNameChampionsEnum.DRMUNDO.getAliases());
+            put(MultiNameChampionsEnum.JARVANIV, MultiNameChampionsEnum.JARVANIV.getAliases());
+            put(MultiNameChampionsEnum.KOGMAW, MultiNameChampionsEnum.KOGMAW.getAliases());
+            put(MultiNameChampionsEnum.LEESIN, MultiNameChampionsEnum.LEESIN.getAliases());
+            put(MultiNameChampionsEnum.MASTERYI, MultiNameChampionsEnum.MASTERYI.getAliases());
+            put(MultiNameChampionsEnum.MISSFORTUNE, MultiNameChampionsEnum.MISSFORTUNE.getAliases());
+            put(MultiNameChampionsEnum.MONKEYKING, MultiNameChampionsEnum.MONKEYKING.getAliases());
+            put(MultiNameChampionsEnum.REKSAI, MultiNameChampionsEnum.REKSAI.getAliases());
+            put(MultiNameChampionsEnum.TAHMKENCH, MultiNameChampionsEnum.TAHMKENCH.getAliases());
+            put(MultiNameChampionsEnum.TWISTEDFATE, MultiNameChampionsEnum.TWISTEDFATE.getAliases());
+            put(MultiNameChampionsEnum.XINZHAO, MultiNameChampionsEnum.XINZHAO.getAliases());
+        }
+    };
     
     public static String checkNameAndAliases(String name, boolean forUrl) {
         String formattedName = name.trim();

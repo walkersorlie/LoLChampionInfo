@@ -4,7 +4,6 @@ package com.walkersorlie.lolchampioninfo.Champion;
 import com.walkersorlie.lolchampioninfo.Deserializers.ChampionDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -22,10 +21,11 @@ public class Champion {
     private final List<String> allyTips;
     private final List<String> enemyTips;
     private final ChampionStats stats;
-    private final Map<String, ChampionSpell> spells;
+//    private final Map<String, ChampionSpell> spells;
+    private final ChampionSpell[] spells;
     private final String[] passive;
 
-    public Champion(String id, long key, String name, List<String> allyTips, List<String> enemyTips, ChampionStats stats, Map<String, ChampionSpell> spells, String[] passive) {
+    public Champion(String id, long key, String name, List<String> allyTips, List<String> enemyTips, ChampionStats stats, ChampionSpell[] spells, String[] passive) {
         this.id = id;
         this.key = key;
         this.name = name;
@@ -60,7 +60,7 @@ public class Champion {
         return stats;
     }
 
-    public Map<String, ChampionSpell> getSpells() {
+    public ChampionSpell[] getSpells() {
         return spells;
     }
 
