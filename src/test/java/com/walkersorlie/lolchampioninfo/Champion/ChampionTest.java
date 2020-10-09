@@ -222,11 +222,10 @@ public class ChampionTest {
     @Test
     public void testGetPassive() {
         System.out.println("getPassive");
-        String[] expResult = new String[] {
-            "Deathbringer Stance", "Periodically, Aatrox's next basic attack deals bonus <physicalDamage>physical damage</physicalDamage> and heals him, based on the target's max health. "
-        };
-        String[] result = champion.getPassive();
-        assertArrayEquals(expResult, result);
+        ChampionPassive expResult = new ChampionPassive("Deathbringer Stance", "Periodically, Aatrox's next basic attack deals bonus <physicalDamage>physical damage</physicalDamage> and heals him, based on the target's max health. ");
+        ChampionPassive result = champion.getPassive();
+        assertEquals(expResult.getName(), result.getName());
+        assertEquals(expResult.getDescription(), result.getDescription());
     }
 
     /**

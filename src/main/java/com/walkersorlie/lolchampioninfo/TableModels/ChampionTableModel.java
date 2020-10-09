@@ -3,6 +3,7 @@ package com.walkersorlie.lolchampioninfo.TableModels;
 
 import com.walkersorlie.lolchampioninfo.Champion.ChampionAttributesEnum;
 import com.walkersorlie.lolchampioninfo.Champion.Champion;
+import com.walkersorlie.lolchampioninfo.Champion.ChampionPassive;
 import com.walkersorlie.lolchampioninfo.Champion.ChampionSpell;
 import com.walkersorlie.lolchampioninfo.Champion.ChampionStats;
 import java.util.EnumMap;
@@ -85,14 +86,12 @@ public class ChampionTableModel extends AbstractTableModel {
                 break;
             }
             case 3: {
-//                Map<String, ChampionSpell> spells = (Map)championData.get(ChampionAttributesEnum.SPELLS);
-//                tableModel = new SpellsTableModel(spells);
                 ChampionSpell[] spells = (ChampionSpell[])championData.get(ChampionAttributesEnum.SPELLS);
                 tableModel = new SpellsTableModel(spells);
                 break;
             }
             case 4: {
-                String[] passive = (String[])championData.get(ChampionAttributesEnum.PASSIVE);
+                ChampionPassive passive = (ChampionPassive)championData.get(ChampionAttributesEnum.PASSIVE);
                 tableModel = new PassiveTableModel(passive);
                 break;
             }

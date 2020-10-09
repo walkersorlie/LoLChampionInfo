@@ -1,6 +1,7 @@
 
 package com.walkersorlie.lolchampioninfo.TableModels;
 
+import com.walkersorlie.lolchampioninfo.Champion.ChampionPassive;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -9,11 +10,11 @@ import javax.swing.table.AbstractTableModel;
  */
 public class PassiveTableModel extends AbstractTableModel {
     
-    private final String[] passive;
+    private final ChampionPassive passive;
     private final String[] columns = {"Passive Name", "What it do?"};
     
     
-    public PassiveTableModel(String[] passive) {
+    public PassiveTableModel(ChampionPassive passive) {
         this.passive = passive;
     }
     
@@ -39,12 +40,12 @@ public class PassiveTableModel extends AbstractTableModel {
          * Return passive name
          */
         if(columnIndex == 0)
-            return passive[0];
+            return passive.getName();
         
         /**
          * Return passive description
          */
         else
-            return passive[1];         
+            return passive.getDescription();         
     }
 }

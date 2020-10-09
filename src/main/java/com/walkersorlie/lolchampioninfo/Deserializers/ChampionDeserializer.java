@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.walkersorlie.lolchampioninfo.Champion.Champion;
+import com.walkersorlie.lolchampioninfo.Champion.ChampionPassive;
 import com.walkersorlie.lolchampioninfo.Champion.ChampionSpell;
 import com.walkersorlie.lolchampioninfo.Champion.ChampionStats;
 import java.io.IOException;
@@ -50,10 +51,8 @@ public class ChampionDeserializer extends StdDeserializer<Champion> {
         List<String> allyTips = new ArrayList<>();
         List<String> enemyTips = new ArrayList<>();
         ChampionStats stats = new ObjectMapper().readValue(champ.toString(), ChampionStats.class);
-        
-//        Map<String, ChampionSpell> spells = new HashMap<>(7);
-        
-        String[] passive;
+        ChampionPassive passive = new ObjectMapper().readValue(champ.toString(), ChampionPassive.class);
+
         
         Iterator allyItr = champ.get("allytips").iterator();
         while(allyItr.hasNext()) {
@@ -74,14 +73,9 @@ public class ChampionDeserializer extends StdDeserializer<Champion> {
             JsonNode index = (JsonNode) spellsItr.next();
             ChampionSpell spell = createSpell(index);
             
-//            spells.put(spell.getId(), spell);
             spellList.add(spell);
         }
-        ChampionSpell[] spells = spellList.toArray(new ChampionSpell[spellList.size()]);
-        
-        
-        JsonNode passiveNode = champ.get("passive");
-        passive = new String[] {passiveNode.get("name").asText(), passiveNode.get("description").asText()};
+        ChampionSpell[] spells = spellList.toArray(new ChampionSpell[spellList.size()]);     
 
         return new Champion(id, key, name, allyTips, enemyTips, stats, spells, passive);
     }
