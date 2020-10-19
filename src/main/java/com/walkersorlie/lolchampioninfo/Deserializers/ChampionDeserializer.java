@@ -75,9 +75,9 @@ public class ChampionDeserializer extends StdDeserializer<Champion> {
             
             spellList.add(spell);
         }
-        ChampionSpell[] spells = spellList.toArray(new ChampionSpell[spellList.size()]);     
+//        ChampionSpell[] spells = spellList.toArray(new ChampionSpell[spellList.size()]);     
 
-        return new Champion(id, key, name, allyTips, enemyTips, stats, spells, passive);
+        return new Champion(id, key, name, allyTips, enemyTips, stats, spellList, passive);
     }
     
     

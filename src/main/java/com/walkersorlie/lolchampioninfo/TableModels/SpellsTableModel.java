@@ -1,7 +1,8 @@
 
 package com.walkersorlie.lolchampioninfo.TableModels;
 
-import com.walkersorlie.lolchampioninfo.Champion.ChampionSpell;
+import com.walkersorlie.lolchampioninfo.Entities.ChampionSpellEntity;
+import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -11,16 +12,15 @@ import javax.swing.table.AbstractTableModel;
 public class SpellsTableModel extends AbstractTableModel {
     
     private final String[] columns = {"Spell Letter", "Spell Name", "Description"};
-//    private final HashMap<String, ChampionSpell> spells;
-    private final ChampionSpell[] spells;
+    private final List<ChampionSpellEntity> spells;
     
-    public SpellsTableModel(ChampionSpell[] spells) {
+    public SpellsTableModel(List<ChampionSpellEntity> spells) {
         this.spells = spells;
     }
     
     @Override
     public int getRowCount() {
-        return spells.length;
+        return spells.size();
     }
 
     @Override
@@ -61,22 +61,22 @@ public class SpellsTableModel extends AbstractTableModel {
         else if(columnIndex == 1) {
             switch(rowIndex) {
                 case 0: {
-                    ChampionSpell spell = spells[0];
+                    ChampionSpellEntity spell = spells.get(0);
                     value = spell.getName();
                     break;
                 }
                 case 1: {
-                    ChampionSpell spell = spells[1];
+                    ChampionSpellEntity spell = spells.get(1);
                     value = spell.getName();
                     break;
                 }
                 case 2: {
-                    ChampionSpell spell = spells[2];
+                    ChampionSpellEntity spell = spells.get(2);
                     value = spell.getName();
                     break;
                 }
                 case 3: {
-                    ChampionSpell spell = spells[3];
+                    ChampionSpellEntity spell = spells.get(3);
                     value = spell.getName();
                     break;
                 }
@@ -86,22 +86,22 @@ public class SpellsTableModel extends AbstractTableModel {
         else {
             switch(rowIndex) {
                 case 0: {
-                    ChampionSpell spell = spells[0];
+                    ChampionSpellEntity spell = spells.get(0);
                     value = spell.getDescription();
                     break;
                 }
                 case 1: {
-                    ChampionSpell spell = spells[1];
+                    ChampionSpellEntity spell = spells.get(1);
                     value = spell.getDescription();
                     break;
                 }
                 case 2: {
-                    ChampionSpell spell = spells[2];
+                    ChampionSpellEntity spell = spells.get(2);
                     value = spell.getDescription();
                     break;
                 }
                 case 3: {
-                    ChampionSpell spell = spells[3];
+                    ChampionSpellEntity spell = spells.get(3);
                     value = spell.getDescription();
                     break;
                 }

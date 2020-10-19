@@ -3,11 +3,10 @@ package com.walkersorlie.lolchampioninfo.TableModels;
 
 import com.walkersorlie.lolchampioninfo.Champion.ChampionAttributesEnum;
 import com.walkersorlie.lolchampioninfo.Champion.Champion;
-import com.walkersorlie.lolchampioninfo.Champion.ChampionPassive;
-import com.walkersorlie.lolchampioninfo.Champion.ChampionSpell;
-import com.walkersorlie.lolchampioninfo.Champion.ChampionStats;
+import com.walkersorlie.lolchampioninfo.Entities.*;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -21,7 +20,7 @@ public class ChampionTableModel extends AbstractTableModel {
         ChampionAttributesEnum.ALLYTIPS.toString(), ChampionAttributesEnum.ENEMYTIPS.toString(), ChampionAttributesEnum.STATS.toString(), 
         ChampionAttributesEnum.SPELLS.toString(), ChampionAttributesEnum.PASSIVE.toString()};
 
-    public ChampionTableModel(Champion champion) {        
+    public ChampionTableModel(ChampionEntity champion) {        
         championData.put(ChampionAttributesEnum.ID, champion.getId());
         championData.put(ChampionAttributesEnum.KEY, champion.getKey());
         championData.put(ChampionAttributesEnum.NAME, champion.getName());
@@ -71,27 +70,33 @@ public class ChampionTableModel extends AbstractTableModel {
 
         switch(rowIndex) {
             case 0: {
-                List<String> tips = (List)championData.get(ChampionAttributesEnum.ALLYTIPS);
+                List<AllyTipsEntity> tipsEntities = (List)championData.get(ChampionAttributesEnum.ALLYTIPS);
+                List<String> tips = tipsEntities.stream()
+                        .map(tip -> tip.getTip())
+                        .collect(Collectors.toList());
                 tableModel = new TipsTableModel(tips);
                 break;
             }
             case 1: {
-                List<String> tips = (List)championData.get(ChampionAttributesEnum.ENEMYTIPS);
+                List<EnemyTipsEntity> tipsEntities = (List)championData.get(ChampionAttributesEnum.ENEMYTIPS);
+                List<String> tips = tipsEntities.stream()
+                        .map(tip -> tip.getTip())
+                        .collect(Collectors.toList());
                 tableModel = new TipsTableModel(tips);
                 break;
             }
             case 2: {
-                ChampionStats stats = (ChampionStats)championData.get(ChampionAttributesEnum.STATS);
-                tableModel = new StatsTableModel(stats);
+                ChampionStatsEntity statsEntity = (ChampionStatsEntity)championData.get(ChampionAttributesEnum.STATS);
+                tableModel = new StatsTableModel(statsEntity);
                 break;
             }
             case 3: {
-                ChampionSpell[] spells = (ChampionSpell[])championData.get(ChampionAttributesEnum.SPELLS);
-                tableModel = new SpellsTableModel(spells);
+                List<ChampionSpellEntity> entityList = (List)championData.get(ChampionAttributesEnum.SPELLS);
+                tableModel = new SpellsTableModel(entityList);
                 break;
             }
             case 4: {
-                ChampionPassive passive = (ChampionPassive)championData.get(ChampionAttributesEnum.PASSIVE);
+                ChampionPassiveEntity passive = (ChampionPassiveEntity)championData.get(ChampionAttributesEnum.PASSIVE);
                 tableModel = new PassiveTableModel(passive);
                 break;
             }

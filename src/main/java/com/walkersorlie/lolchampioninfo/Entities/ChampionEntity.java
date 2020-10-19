@@ -1,17 +1,16 @@
 
 package com.walkersorlie.lolchampioninfo.Entities;
 
-import com.walkersorlie.lolchampioninfo.Champion.ChampionPassive;
-import com.walkersorlie.lolchampioninfo.Champion.ChampionSpell;
-import com.walkersorlie.lolchampioninfo.Champion.ChampionStats;
+import com.walkersorlie.lolchampioninfo.Champion.Champion;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 /**
@@ -25,46 +24,39 @@ public class ChampionEntity implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
-    @Id
     @Column(name = "CHAMPION_ID")
     private String id;
     
-    @Column(name = "KEY")
+    @Id
+    @Column(name = "CHAMPION_KEY")
     private Long key;
     
     @Column(name = "NAME")
     private String name;
     
-    @OneToMany(mappedBy = "CHAMPION_ENTITY")
-    private List<String> allyTips;
+    @OneToMany(mappedBy = "champion")
+    private List<AllyTipsEntity> allyTips;
     
-    @OneToMany(mappedBy = "CHAMPION_ENTITY")
-    private List<String> enemyTips;
+    @OneToMany(mappedBy = "champion")
+    private List<EnemyTipsEntity> enemyTips;
+    
+    @OneToOne(fetch = FetchType.LAZY)
+    private ChampionStatsEntity stats;
+    
+    @OneToMany(mappedBy = "champion")
+    @OrderColumn(name = "CHAMPION_SPELL_ENTITY_ID")
+    private List<ChampionSpellEntity> spells;
     
     @OneToOne
-    @PrimaryKeyJoinColumn
-    private ChampionStats stats;
-    
-    @OneToMany(mappedBy = "CHAMPION_ENTITY")
-    private ChampionSpell[] spells;
-    
-    @OneToOne
-    @PrimaryKeyJoinColumn
-    private ChampionPassive passive;
-    
-    
+    private ChampionPassiveEntity passive;
+        
     public ChampionEntity() { }
     
-    public ChampionEntity(String id, Long key, String name, List<String>allyTips, List<String>enemyTips, ChampionStats stats, ChampionSpell[] spells, ChampionPassive passive) {
-        this.id = id;
-        this.key = key;
-        this.name = name;
-        this.allyTips = allyTips;
-        this.enemyTips = enemyTips;
-        this.stats = stats;
-        this.spells = spells;
-        this.passive = passive;
-    }
+    public ChampionEntity(Champion champion) {
+        this.id = champion.getId();
+        this.key = champion.getKey();
+        this.name = champion.getName();
+    } 
 
     public String getId() {
         return id;
@@ -90,43 +82,43 @@ public class ChampionEntity implements Serializable {
         this.name = name;
     }
 
-    public List<String> getAllyTips() {
+    public List<AllyTipsEntity> getAllyTips() {
         return allyTips;
     }
 
-    public void setAllyTips(List<String> allyTips) {
+    public void setAllyTips(List<AllyTipsEntity> allyTips) {
         this.allyTips = allyTips;
     }
 
-    public List<String> getEnemyTips() {
+    public List<EnemyTipsEntity> getEnemyTips() {
         return enemyTips;
     }
 
-    public void setEnemyTips(List<String> enemyTips) {
+    public void setEnemyTips(List<EnemyTipsEntity> enemyTips) {
         this.enemyTips = enemyTips;
     }
 
-    public ChampionStats getStats() {
+    public ChampionStatsEntity getStats() {
         return stats;
     }
 
-    public void setStats(ChampionStats stats) {
+    public void setStats(ChampionStatsEntity stats) {
         this.stats = stats;
     }
 
-    public ChampionSpell[] getSpells() {
+    public List<ChampionSpellEntity> getSpells() {
         return spells;
     }
 
-    public void setSpells(ChampionSpell[] spells) {
+    public void setSpells(List<ChampionSpellEntity> spells) {
         this.spells = spells;
     }
 
-    public ChampionPassive getPassive() {
+    public ChampionPassiveEntity getPassive() {
         return passive;
     }
 
-    public void setPassive(ChampionPassive passive) {
+    public void setPassive(ChampionPassiveEntity passive) {
         this.passive = passive;
     }
 }

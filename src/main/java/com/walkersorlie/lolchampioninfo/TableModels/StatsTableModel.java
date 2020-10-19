@@ -2,7 +2,7 @@
 package com.walkersorlie.lolchampioninfo.TableModels;
 
 import com.walkersorlie.lolchampioninfo.Champion.ChampionStatsAttributeEnum;
-import com.walkersorlie.lolchampioninfo.Champion.ChampionStats;
+import com.walkersorlie.lolchampioninfo.Entities.ChampionStatsEntity;
 import java.util.EnumMap;
 import javax.swing.table.AbstractTableModel;
 
@@ -22,7 +22,7 @@ public class StatsTableModel extends AbstractTableModel {
         ChampionStatsAttributeEnum.CRIT.toString(), ChampionStatsAttributeEnum.CRIT_PER_LEVEL.toString(), ChampionStatsAttributeEnum.ATTACK_DAMAGE.toString(), 
         ChampionStatsAttributeEnum.ATTACK_DAMAGE_PER_LEVEL.toString(), ChampionStatsAttributeEnum.ATTACK_SPEED_PER_LEVEL.toString(), ChampionStatsAttributeEnum.ATTACK_SPEED.toString()};
     
-    public StatsTableModel(ChampionStats stats) {
+    public StatsTableModel(ChampionStatsEntity stats) {
         
         championStats.put(ChampionStatsAttributeEnum.HP, stats.getHp());
         championStats.put(ChampionStatsAttributeEnum.HP_PER_LEVEL, stats.getHpPerLevel());

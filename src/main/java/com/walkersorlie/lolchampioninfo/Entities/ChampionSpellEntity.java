@@ -1,7 +1,7 @@
 
 package com.walkersorlie.lolchampioninfo.Entities;
 
-import com.walkersorlie.lolchampioninfo.Champion.Champion;
+import com.walkersorlie.lolchampioninfo.Champion.ChampionSpell;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,11 +24,12 @@ public class ChampionSpellEntity implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "CHAMPION_SPELL_ENTITY_ID")
     private Long id;
     
     @ManyToOne
     @JoinColumn(name = "CHAMPION_ID")
-    private Champion champion;
+    private ChampionEntity champion;
     
     @Column(name = "SPELL_ID")
     private String spellId;
@@ -36,17 +37,24 @@ public class ChampionSpellEntity implements Serializable {
     @Column(name = "SPELL_NAME")
     private String name;
     
-    @Column(name = "SPELL_DESCRIPTION")
+    @Column(name = "SPELL_DESCRIPTION", length = 500)
     private String description;
     
-    @Column(name = "SPELL_TOOLTIP")
+    @Column(name = "SPELL_TOOLTIP", length = 2000)
     private String toolTip;
 
     
     public ChampionSpellEntity() { }
+    
+    public ChampionSpellEntity(ChampionEntity championEntity, ChampionSpell spell) {
+        champion = championEntity;
+        spellId = spell.getId();
+        name = spell.getId();
+        description = spell.getDescription();
+        toolTip = spell.getToolTip();
+    }
 
-    public ChampionSpellEntity(Long id, Champion champion, String spellId, String name, String description, String toolTip) {
-        this.id = id;
+    public ChampionSpellEntity(ChampionEntity champion, String spellId, String name, String description, String toolTip) {
         this.champion = champion;
         this.spellId = spellId;
         this.name = name;
@@ -58,7 +66,7 @@ public class ChampionSpellEntity implements Serializable {
         return id;
     }
 
-    public Champion getChampion() {
+    public ChampionEntity getChampion() {
         return champion;
     }
 
@@ -82,7 +90,7 @@ public class ChampionSpellEntity implements Serializable {
         this.id = id;
     }
 
-    public void setChampion(Champion champion) {
+    public void setChampion(ChampionEntity champion) {
         this.champion = champion;
     }
 

@@ -1,13 +1,14 @@
 
 package com.walkersorlie.lolchampioninfo.Entities;
 
-import com.walkersorlie.lolchampioninfo.Champion.Champion;
+import com.walkersorlie.lolchampioninfo.Champion.ChampionStats;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -26,7 +27,8 @@ public class ChampionStatsEntity implements Serializable {
     private Long id;
     
     @OneToOne
-    private Champion champion;
+    @JoinColumn(name = "CHAMPION_ID")
+    private ChampionEntity champion;
     
     @Column(name = "HP")
     private double hp;
@@ -90,9 +92,32 @@ public class ChampionStatsEntity implements Serializable {
 
     
     public ChampionStatsEntity() { }
+    
+    public ChampionStatsEntity(ChampionEntity championEntity, ChampionStats championStats) {
+        this.champion = championEntity;
+        this.hp = championStats.getHp();
+        this.hpPerLevel = championStats.getHpPerLevel();
+        this.mp = championStats.getMp();
+        this.mpPerLevel = championStats.getMpPerLevel();
+        this.moveSpeed = championStats.getMoveSpeed();
+        this.armor = championStats.getArmor();
+        this.armorPerLeveL = championStats.getArmorPerLeveL();
+        this.spellBlock = championStats.getSpellBlock();
+        this.spellBlockPerLevel = championStats.getSpellBlockPerLevel();
+        this.attackRange = championStats.getAttackRange();
+        this.hpRegen = championStats.getHpRegen();
+        this.hpRegenPerLevel = championStats.getHpRegenPerLevel();
+        this.mpRegen = championStats.getMpRegen();
+        this.mpRegenPerLevel = championStats.getMpRegenPerLevel();
+        this.crit = championStats.getCrit();
+        this.critPerLeveL = championStats.getCritPerLeveL();
+        this.attackDamage = championStats.getAttackDamage();
+        this.attackDamagePerLevel = championStats.getAttackDamagePerLevel();
+        this.attackspeedPerLevel = championStats.getAttackspeedPerLevel();
+        this.attackSpeed = championStats.getAttackSpeed();
+    }
 
-    public ChampionStatsEntity(Long id, Champion champion, double hp, double hpPerLevel, double mp, double mpPerLevel, double moveSpeed, double armor, double armorPerLeveL, double spellBlock, double spellBlockPerLevel, double attackRange, double hpRegen, double hpRegenPerLevel, double mpRegen, double mpRegenPerLevel, double crit, double critPerLeveL, double attackDamage, double attackDamagePerLevel, double attackspeedPerLevel, double attackSpeed) {
-        this.id = id;
+    public ChampionStatsEntity(ChampionEntity champion, double hp, double hpPerLevel, double mp, double mpPerLevel, double moveSpeed, double armor, double armorPerLeveL, double spellBlock, double spellBlockPerLevel, double attackRange, double hpRegen, double hpRegenPerLevel, double mpRegen, double mpRegenPerLevel, double crit, double critPerLeveL, double attackDamage, double attackDamagePerLevel, double attackspeedPerLevel, double attackSpeed) {
         this.champion = champion;
         this.hp = hp;
         this.hpPerLevel = hpPerLevel;
@@ -120,7 +145,7 @@ public class ChampionStatsEntity implements Serializable {
         return id;
     }
 
-    public Champion getChampion() {
+    public ChampionEntity getChampion() {
         return champion;
     }
 
@@ -202,13 +227,9 @@ public class ChampionStatsEntity implements Serializable {
 
     public double getAttackSpeed() {
         return attackSpeed;
-    }  
+    } 
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setChampion(Champion champion) {
+    public void setChampion(ChampionEntity champion) {
         this.champion = champion;
     }
 

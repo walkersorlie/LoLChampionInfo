@@ -8,10 +8,10 @@ import java.util.Objects;
  * @author Walker Sorlie
  */
 public class ChampionSpell {
-    private String id;
-    private String name;
-    private String description;
-    private String toolTip;
+    private final String id;
+    private final String name;
+    private final String description;
+    private final String toolTip;
 
     public ChampionSpell(String id, String name, String description, String toolTip) {
         this.id = id;

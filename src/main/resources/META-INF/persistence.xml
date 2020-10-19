@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-  <persistence-unit name="com.walkersorlie_LoLChampionInfo_jar_1.0PU" transaction-type="RESOURCE_LOCAL">
-    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+  <persistence-unit name="LoLChampionInfo_Entities.OPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <class>com.walkersorlie.lolchampioninfo.Entities.ChampionPassiveEntity</class>
     <class>com.walkersorlie.lolchampioninfo.Entities.ChampionSpellEntity</class>
     <class>com.walkersorlie.lolchampioninfo.Entities.ChampionStatsEntity</class>
-    <class>com.walkersorlie.lolchampioninfo.Entities.ChampionTipsEntity</class>
+    <class>com.walkersorlie.lolchampioninfo.Entities.ChampionEntity</class>
+    <class>com.walkersorlie.lolchampioninfo.Entities.AllyTipsEntity</class>
+    <class>com.walkersorlie.lolchampioninfo.Entities.EnemyTipsEntity</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:h2:./lol_db"/>
-      <property name="javax.persistence.jdbc.user" value="user"/>
-      <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="password"/>
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:lol"/>
+      <property name="javax.persistence.jdbc.user" value=""/>
+      <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
     </properties>
   </persistence-unit>

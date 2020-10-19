@@ -1,7 +1,7 @@
 
 package com.walkersorlie.lolchampioninfo.TableModels;
 
-import com.walkersorlie.lolchampioninfo.Champion.ChampionPassive;
+import com.walkersorlie.lolchampioninfo.Entities.ChampionPassiveEntity;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -10,11 +10,11 @@ import javax.swing.table.AbstractTableModel;
  */
 public class PassiveTableModel extends AbstractTableModel {
     
-    private final ChampionPassive passive;
+    private final ChampionPassiveEntity passive;
     private final String[] columns = {"Passive Name", "What it do?"};
     
     
-    public PassiveTableModel(ChampionPassive passive) {
+    public PassiveTableModel(ChampionPassiveEntity passive) {
         this.passive = passive;
     }
     

@@ -146,33 +146,34 @@ public class ChampionTest {
         ChampionSpell aatroxE = new ChampionSpell("AatroxE", "Umbral Dash", "Passively, Aatrox heals when damaging enemy champions. On activation, he dashes in a direction.", 	"<spellPassive>Passive:</spellPassive> Aatrox heals for {{ espellvamp }}% of damage he deals to champions.<br /><br /><spellActive>Active:</spellActive> Aatrox dashes in a direction.");
         ChampionSpell aatroxR = new ChampionSpell("AatroxR", "World Ender", "Aatrox unleashes his demonic form, fearing nearby enemy minions and gaining attack damage, increased healing, and movement speed. If he gets a takedown, this effect is extended.", 	"Aatrox reveals his true demonic form for {{ rduration }} seconds. On activation, he fears nearby enemy minions and gains Movement Speed, decaying over the duration. While World Ender persists, he gains {{ rtotaladamp*100 }}% Attack Damage and increases self healing by {{ rhealingamp*100 }}%.<br /><br />On enemy champion takedown, World Ender is extended.");
 //        Map<String, ChampionSpell> result = champion.getSpells();
-        ChampionSpell[] result = champion.getSpells();
+//        ChampionSpell[] result = champion.getSpells();
+        List<ChampionSpell> result = champion.getSpells();
         int i = 0;
-        while(i < result.length) {
+        while(i < result.size()) {
             switch(i) {
                 case 0: {
-                    ChampionSpell spell = result[i];
+                    ChampionSpell spell = result.get(i);
                     assertEquals(aatroxQ.getId(), spell.getId());
                     assertEquals(aatroxQ.getDescription(), spell.getDescription());
                     assertEquals(aatroxQ.getToolTip(), spell.getToolTip());
                     break;
                 }
                 case 1: {
-                    ChampionSpell spell = result[i];
+                    ChampionSpell spell = result.get(i);
                     assertEquals(aatroxW.getId(), spell.getId());
                     assertEquals(aatroxW.getDescription(), spell.getDescription());
                     assertEquals(aatroxW.getToolTip(), spell.getToolTip());
                     break;
                 }
                 case 2: {
-                    ChampionSpell spell = result[i];
+                    ChampionSpell spell = result.get(i);
                     assertEquals(aatroxE.getId(), spell.getId());
                     assertEquals(aatroxE.getDescription(), spell.getDescription());
                     assertEquals(aatroxE.getToolTip(), spell.getToolTip());
                     break;
                 }
                 case 3: {
-                    ChampionSpell spell = result[i];
+                    ChampionSpell spell = result.get(i);
                     assertEquals(aatroxR.getId(), spell.getId());
                     assertEquals(aatroxR.getDescription(), spell.getDescription());
                     assertEquals(aatroxR.getToolTip(), spell.getToolTip());

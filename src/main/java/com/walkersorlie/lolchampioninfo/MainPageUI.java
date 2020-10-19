@@ -12,17 +12,20 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.walkersorlie.lolchampioninfo.Champion.ChampionSpell;
 import com.walkersorlie.lolchampioninfo.Champion.MultiNameChampionsEnum;
 import com.walkersorlie.lolchampioninfo.Deserializers.ChampionsListDeserializer;
+import com.walkersorlie.lolchampioninfo.Controllers.*;
+import com.walkersorlie.lolchampioninfo.Controllers.exceptions.*;
+import com.walkersorlie.lolchampioninfo.Entities.*;
 import com.walkersorlie.lolchampioninfo.TableModels.ChampionsListTableModel;
-import com.walkersorlie.lolchampioninfo.TableModels.SpellsTableModel;
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN;
+import java.util.stream.Collectors;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 /**
@@ -37,6 +40,7 @@ public class MainPageUI extends javax.swing.JFrame {
     public MainPageUI() {
         initComponents();
         setChampionsListTableModel();
+        initControllers();
     }
 
     /**
@@ -194,6 +198,16 @@ public class MainPageUI extends javax.swing.JFrame {
         }   	 
     }
     
+    private void initControllers() {
+        entityManagerFactory = Persistence.createEntityManagerFactory("LoLChampionInfo_Entities.OPU");
+        championEntityController = new ChampionEntityJpaController(entityManagerFactory);
+        allyTipsEntityController = new AllyTipsEntityJpaController(entityManagerFactory);
+        enemyTipsEntityController = new EnemyTipsEntityJpaController(entityManagerFactory);
+        championPassiveEntityController = new ChampionPassiveEntityJpaController(entityManagerFactory);
+        championSpellEntityController = new ChampionSpellEntityJpaController(entityManagerFactory);
+        championStatsEntityController = new ChampionStatsEntityJpaController(entityManagerFactory);
+    }
+    
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         displayChampionAttributeTable.setModel(new DefaultTableModel());
         
@@ -222,7 +236,6 @@ public class MainPageUI extends javax.swing.JFrame {
         displayChampionAttributeTable.setModel(new DefaultTableModel());
         searchField.setText((String)table.getValueAt(row, column));     
         
-        
         ChampionsListTableModel value = (ChampionsListTableModel)table.getModel();
         
         displayChampionAttributeTable(value.getValueAt(row, column));
@@ -241,22 +254,87 @@ public class MainPageUI extends javax.swing.JFrame {
         populateDisplayChampionAttributeTable(value.getCellTableModel(row, column));
     }//GEN-LAST:event_selectChampionAttributeTableMouseClicked
     
+    private ChampionEntity getChampionEntity(String championName) {    
+        Optional<ChampionEntity> alreadyCreatedChampionEntityOptional = championEntityController.findChampionEntityByName(championName);
+  
+        if(alreadyCreatedChampionEntityOptional.isPresent()) { 
+            ChampionEntity champ = alreadyCreatedChampionEntityOptional.get();
+            championSpellEntityController.findChampionSpellsEntity(champ).stream()
+                    .forEach(spell -> System.out.println(spell.get().getName()));
+            
+            System.out.println("Total count: " + championSpellEntityController.getChampionSpellEntityCount());
+            System.out.println("Size: " + champ.getSpells().size());
+//            champ.getSpells().forEach((spell -> 
+//                System.out.println(spell.getName())));
+            
+            return alreadyCreatedChampionEntityOptional.get();
+        }
+        else 
+            return createChampionEntity(championName);
+    }
+    
+    private ChampionEntity createChampionEntity(String championName) {
+        Champion champion;
+        String response;
+        ChampionEntity championEntity = null;
+        try { 
+            response = NetworkRequest.sendGet(championName);
+            champion = new ObjectMapper().readValue(response, Champion.class);
+
+            championEntity = new ChampionEntity(champion);
+            championEntityController.create(championEntity);
+            
+            for(String tip : champion.getAllyTips())
+                allyTipsEntityController.create(new AllyTipsEntity(championEntity, tip));
+            championEntity.setAllyTips(allyTipsEntityController.findAllyTips(championEntity).stream()
+                    .map(tip -> tip.get())
+                    .collect(Collectors.toList()));
+            
+            for(String tip : champion.getEnemyTips())
+                enemyTipsEntityController.create(new EnemyTipsEntity(championEntity, tip));
+            championEntity.setEnemyTips(enemyTipsEntityController.findEnemyTips(championEntity).stream()
+                    .map(tip -> tip.get())
+                    .collect(Collectors.toList()));
+            
+            for(ChampionSpell spell : champion.getSpells())
+                championSpellEntityController.create(new ChampionSpellEntity(championEntity, spell));
+            championEntity.setSpells(championSpellEntityController.findChampionSpellsEntity(championEntity).stream()
+                    .map(spell -> spell.get())
+                    .collect(Collectors.toList()));
+            
+            championStatsEntityController.create(new ChampionStatsEntity(championEntity, champion.getStats()));
+            championEntity.setStats(championStatsEntityController.findChampionStatsEntity(championEntity).get());
+            
+            championPassiveEntityController.create(new ChampionPassiveEntity(championEntity, champion.getPassive()));
+            championEntity.setPassive(championPassiveEntityController.findChampionPassiveEntity(championEntity).get());
+
+//                List<AllyTipsEntity> tips = tipsOptionalList.stream()
+//                        .map(tip -> tip.get())
+//                        .collect(Collectors.toList());
+
+//                tipsOptionalList.forEach((tip) -> {
+//                    tips.add(tip.get());
+//                });
+        } catch (ProtocolException ex) {
+            Logger.getLogger(MainPageUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MainPageUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(MainPageUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return championEntity;
+    }
     /**
      * Display the specific attribute table for the selected attribute
      * @param championName 
      */
     private void displayChampionAttributeTable(String championName) {
-        try {
-            // Will do caching/database reading+writing here
-            String response = NetworkRequest.sendGet(championName);
+        ChampionEntity championEntity = getChampionEntity(championName);
+        selectChampionAttributeTable.setModel(new ChampionTableModel(championEntity));
+        selectChampionAttributeTable.changeSelection(0, 0, false, false);
+        ChampionTableModel value = (ChampionTableModel)selectChampionAttributeTable.getModel();
+        populateDisplayChampionAttributeTable(value.getCellTableModel(0, 0));
 
-            Champion champion = new ObjectMapper().readValue(response, Champion.class);
-
-            selectChampionAttributeTable.setModel(new ChampionTableModel(champion));
-            selectChampionAttributeTable.changeSelection(0, 0, false, false);
-            ChampionTableModel value = (ChampionTableModel)selectChampionAttributeTable.getModel();
-            populateDisplayChampionAttributeTable(value.getCellTableModel(0, 0));
-            
 //            TableInTableRenderer renderer = new TableInTableRenderer();
 
 //            for(int i = 0; i < selectChampionAttributeTable.getRowCount(); i++) {
@@ -265,13 +343,7 @@ public class MainPageUI extends javax.swing.JFrame {
 //                selectChampionAttributeTable.setValueAt(cell, i, 1);          
 //            }
             
-        } catch (ProtocolException ex) {
-            Logger.getLogger(MainPageUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(MainPageUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(MainPageUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
     
     /**
@@ -337,6 +409,12 @@ public class MainPageUI extends javax.swing.JFrame {
     private javax.swing.JTextField searchField;
     private javax.swing.JTable selectChampionAttributeTable;
     // End of variables declaration//GEN-END:variables
-    private ArrayList<String> championsList;
-
+    private ArrayList<String> championsList;  
+    private EntityManagerFactory entityManagerFactory;
+    private ChampionEntityJpaController championEntityController;
+    private AllyTipsEntityJpaController allyTipsEntityController;
+    private EnemyTipsEntityJpaController enemyTipsEntityController;
+    private ChampionPassiveEntityJpaController championPassiveEntityController;
+    private ChampionSpellEntityJpaController championSpellEntityController;
+    private ChampionStatsEntityJpaController championStatsEntityController;
 }

@@ -1,7 +1,6 @@
 
 package com.walkersorlie.lolchampioninfo.Entities;
 
-import com.walkersorlie.lolchampioninfo.Champion.Champion;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,52 +16,47 @@ import javax.persistence.Table;
  * @author Walker Sorlie
  */
 @Entity
-@Table(name = "TIPS_ENTITY")
-public class ChampionTipsEntity implements Serializable {
+@Table(name = "ALLY_TIPS_ENTITY")
+public class AllyTipsEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "TIP_ID")
-    private Long id;    
+    @Column(name = "ALLY_TIP_ID")
+    private Long id;  
     
     @ManyToOne
     @JoinColumn(name = "CHAMPION_ID")
-    private Champion champion;
+    private ChampionEntity champion;
     
-    @Column(name = "TIP_DESCRIPTION")
+    @Column(name = "ALLY_TIP_DESCRIPTION", length = 500)
     private String tip;
 
     
-    public ChampionTipsEntity() { }
-
-    public ChampionTipsEntity(Long id, Champion champion, String tip) {
-        this.id = id;
+    public AllyTipsEntity() { }
+ 
+    public AllyTipsEntity(ChampionEntity champion, String tip) {
         this.champion = champion;
         this.tip = tip;
-    } 
+    }
 
     public Long getId() {
         return id;
     }
 
-    public Champion getChampion() {
+    public ChampionEntity getChampion() {
         return champion;
     }
 
     public String getTip() {
         return tip;
     }
-    
-    public void setId(Long id) {
-        this.id = id;
+
+    public void setChampion(ChampionEntity champion) {
+        this.champion = champion;
     }
 
-    public void setChampion(Champion champion) {
-        this.champion = champion;
-    }  
-    
     public void setTip(String tip) {
         this.tip = tip;
     }
@@ -77,10 +71,10 @@ public class ChampionTipsEntity implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ChampionTipsEntity)) {
+        if (!(object instanceof AllyTipsEntity)) {
             return false;
         }
-        ChampionTipsEntity other = (ChampionTipsEntity) object;
+        AllyTipsEntity other = (AllyTipsEntity) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -89,7 +83,7 @@ public class ChampionTipsEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "com.walkersorlie.lolchampioninfo.Entities.TipsEntity[ id=" + id + " ]";
+        return "com.walkersorlie.lolchampioninfo.Entities.AllyTipsEntity[ id=" + id + " ]";
     }
 
 }

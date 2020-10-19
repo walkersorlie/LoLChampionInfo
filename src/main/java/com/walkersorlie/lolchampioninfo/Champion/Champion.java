@@ -21,10 +21,10 @@ public class Champion {
     private final List<String> allyTips;
     private final List<String> enemyTips;
     private final ChampionStats stats;
-    private final ChampionSpell[] spells;
+    private final List<ChampionSpell> spells;
     private final ChampionPassive passive;
 
-    public Champion(String id, long key, String name, List<String> allyTips, List<String> enemyTips, ChampionStats stats, ChampionSpell[] spells, ChampionPassive passive) {
+    public Champion(String id, long key, String name, List<String> allyTips, List<String> enemyTips, ChampionStats stats, List<ChampionSpell> spells, ChampionPassive passive) {
         this.id = id;
         this.key = key;
         this.name = name;
@@ -59,7 +59,7 @@ public class Champion {
         return stats;
     }
 
-    public ChampionSpell[] getSpells() {
+    public List<ChampionSpell> getSpells() {
         return spells;
     }
 

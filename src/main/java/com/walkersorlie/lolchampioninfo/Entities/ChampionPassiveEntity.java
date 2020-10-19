@@ -1,7 +1,7 @@
 
 package com.walkersorlie.lolchampioninfo.Entities;
 
-import com.walkersorlie.lolchampioninfo.Champion.Champion;
+import com.walkersorlie.lolchampioninfo.Champion.ChampionPassive;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,19 +26,24 @@ public class ChampionPassiveEntity implements Serializable {
     private Long id;
     
     @OneToOne
-    private Champion champion;
+    private ChampionEntity champion;
     
     @Column(name = "PASSIVE_NAME")
     private String name;
     
-    @Column(name = "PASSIVE_DESCRIPTION")
+    @Column(name = "PASSIVE_DESCRIPTION", length = 500)
     private String description;
 
     
     public ChampionPassiveEntity() { }
+    
+    public ChampionPassiveEntity(ChampionEntity championEntity, ChampionPassive passive) {
+        this.champion = championEntity;
+        this.name = passive.getName();
+        this.description = passive.getDescription();
+    }
 
-    public ChampionPassiveEntity(Long id, Champion champion, String name, String description) {
-        this.id = id;
+    public ChampionPassiveEntity(ChampionEntity champion, String name, String description) {
         this.champion = champion;
         this.name = name;
         this.description = description;
@@ -48,7 +53,7 @@ public class ChampionPassiveEntity implements Serializable {
         return id;
     }
 
-    public Champion getChampion() {
+    public ChampionEntity getChampion() {
         return champion;
     }
 
@@ -60,11 +65,7 @@ public class ChampionPassiveEntity implements Serializable {
         return description;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setChampion(Champion champion) {
+    public void setChampion(ChampionEntity champion) {
         this.champion = champion;
     }
 
