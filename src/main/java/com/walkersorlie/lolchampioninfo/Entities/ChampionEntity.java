@@ -44,7 +44,7 @@ public class ChampionEntity implements Serializable {
     private ChampionStatsEntity stats;
     
     @OneToMany(mappedBy = "champion")
-    @OrderColumn(name = "CHAMPION_SPELL_ENTITY_ID")
+//    @OrderColumn(name = "CHAMPION_SPELL_ENTITY_ID")
     private List<ChampionSpellEntity> spells;
     
     @OneToOne
