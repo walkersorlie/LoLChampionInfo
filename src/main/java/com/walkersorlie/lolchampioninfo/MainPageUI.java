@@ -213,15 +213,21 @@ public class MainPageUI extends javax.swing.JFrame {
         
         String champion = searchField.getText();
         String result = champion.trim();
-//        result = result.substring(0, 1).toUpperCase() + result.substring(1).toLowerCase();
-        result = MultiNameChampionsEnum.checkNameAndAliases(result.toLowerCase(), false);
+        result = MultiNameChampionsEnum.checkNameAndAliases(result, false);
         
         championsListTable.changeSelection(championsList.indexOf(result), 0, false, false);
-        displayChampionAttributeTable(champion);
+        displayChampionAttributeTable(result);
     }//GEN-LAST:event_searchFieldActionPerformed
     
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        displayChampionAttributeTable(searchField.getText());
+        displayChampionAttributeTable.setModel(new DefaultTableModel());
+        
+        String champion = searchField.getText();
+        String result = champion.trim();
+        result = MultiNameChampionsEnum.checkNameAndAliases(result, false);
+        
+        championsListTable.changeSelection(championsList.indexOf(result), 0, false, false);
+        displayChampionAttributeTable(result);
     }//GEN-LAST:event_searchButtonActionPerformed
     
     /**
@@ -254,34 +260,24 @@ public class MainPageUI extends javax.swing.JFrame {
         populateDisplayChampionAttributeTable(value.getCellTableModel(row, column));
     }//GEN-LAST:event_selectChampionAttributeTableMouseClicked
     
-    private ChampionEntity getChampionEntity(String championName) {    
-        Optional<ChampionEntity> alreadyCreatedChampionEntityOptional = championEntityController.findChampionEntityByName(championName);
+    private ChampionEntity getChampionEntity(String championId) {  
+        Optional<ChampionEntity> alreadyCreatedChampionEntityOptional = championEntityController.findChampionEntityById(championId);
   
-        if(alreadyCreatedChampionEntityOptional.isPresent()) { 
-            ChampionEntity champ = alreadyCreatedChampionEntityOptional.get();
-            championSpellEntityController.findChampionSpellsEntity(champ).stream()
-                    .forEach(spell -> System.out.println(spell.get().getName()));
-            
-            System.out.println("Total count: " + championSpellEntityController.getChampionSpellEntityCount());
-            System.out.println("Size: " + champ.getSpells().size());
-//            champ.getSpells().forEach((spell -> 
-//                System.out.println(spell.getName())));
-            
-            return alreadyCreatedChampionEntityOptional.get();
-        }
+        if(alreadyCreatedChampionEntityOptional.isPresent())
+            return alreadyCreatedChampionEntityOptional.get(); 
         else 
-            return createChampionEntity(championName);
+            return createChampionEntity(championId);
     }
     
-    private ChampionEntity createChampionEntity(String championName) {
+    private ChampionEntity createChampionEntity(String championId) {
         Champion champion;
         String response;
         ChampionEntity championEntity = null;
         try { 
-            response = NetworkRequest.sendGet(championName);
+            response = NetworkRequest.sendGet(championId);
             champion = new ObjectMapper().readValue(response, Champion.class);
 
-            championEntity = new ChampionEntity(champion);
+            championEntity = new ChampionEntity(champion);          
             championEntityController.create(championEntity);
             
             for(String tip : champion.getAllyTips())
@@ -307,6 +303,7 @@ public class MainPageUI extends javax.swing.JFrame {
             
             championPassiveEntityController.create(new ChampionPassiveEntity(championEntity, champion.getPassive()));
             championEntity.setPassive(championPassiveEntityController.findChampionPassiveEntity(championEntity).get());
+            System.out.println(championEntity.getKey());
 
 //                List<AllyTipsEntity> tips = tipsOptionalList.stream()
 //                        .map(tip -> tip.get())

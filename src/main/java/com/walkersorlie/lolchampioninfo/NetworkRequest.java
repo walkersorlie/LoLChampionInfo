@@ -15,17 +15,16 @@ import java.util.stream.Collectors;
  */
 public final class NetworkRequest {       
     
-    private static String stringURL = "http://ddragon.leagueoflegends.com/cdn/10.18.1/data/en_US/champion";
+    private static final String BASE_URL = "http://ddragon.leagueoflegends.com/cdn/10.18.1/data/en_US/champion";
     
     private NetworkRequest() {}
     
      public static String sendGet(String name) throws Exception {
-         NetworkRequest test = new NetworkRequest();
          URL url;
          if (checkName(name).isEmpty()) {
-             url = new URL(stringURL + ".json");
+             url = new URL(BASE_URL + ".json");
          } else {
-             url = new URL(stringURL + "/" + checkName(name));
+             url = new URL(BASE_URL + "/" + checkName(name));
          }
          System.out.println(url.toString());
          HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();

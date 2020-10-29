@@ -207,13 +207,13 @@ public class ChampionEntityJpaController implements Serializable {
         }
     }
     
-    public Optional<ChampionEntity> findChampionEntityByName(String name) {
+    public Optional<ChampionEntity> findChampionEntityById(String id) {
         EntityManager em = getEntityManager();
         try {
-            ChampionEntity champion = em.createQuery("SELECT champion FROM ChampionEntity champion WHERE champion.name = :name", ChampionEntity.class)
-                    .setParameter("name", name)
+            ChampionEntity champion = em.createQuery("SELECT champion FROM ChampionEntity champion WHERE champion.id = :id", ChampionEntity.class)
+                    .setParameter("id", id)
                     .getSingleResult();
-            return champion != null ? Optional.of(champion) : Optional.empty();
+            return Optional.of(champion);
         } catch (NoResultException ex) {
             return Optional.empty();
         }
