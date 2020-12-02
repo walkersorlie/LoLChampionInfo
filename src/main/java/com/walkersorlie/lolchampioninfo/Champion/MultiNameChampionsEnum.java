@@ -30,6 +30,24 @@ public enum MultiNameChampionsEnum {
             return "AurelionSol";
         }
     },
+    BARD {
+        private final ArrayList<String> aliases = new ArrayList(Arrays.asList("Brad", "brad"));
+        
+        @Override
+        public String formatNameForTable() {
+            return "Bard";
+        }
+
+        @Override
+        public String formatNameForUrl() {
+            return "Bard.json";
+        }
+
+        @Override
+        public ArrayList<String> getAliases() {
+            return aliases;
+        }      
+    },
     DRMUNDO {
         private final ArrayList<String> aliases = new ArrayList(Arrays.asList("mundo"));
         
@@ -65,6 +83,24 @@ public enum MultiNameChampionsEnum {
         public String formatNameForTable() {
             return "JarvanIV";
         }
+    },
+    KATARINA {
+        private final ArrayList<String> aliases = new ArrayList(Arrays.asList("Kat", "kat"));
+        @Override
+        public String formatNameForTable() {
+            return "Katarina";
+        }
+
+        @Override
+        public String formatNameForUrl() {
+            return "Katarina.json";
+        }
+
+        @Override
+        public ArrayList<String> getAliases() {
+            return aliases;
+        }
+        
     },
     KOGMAW {
         private final ArrayList<String> aliases = new ArrayList(Arrays.asList("kog"));
@@ -235,9 +271,11 @@ public enum MultiNameChampionsEnum {
     
     public static final EnumMap MULTI_NAME_CHAMPIONS_ENUM_MAP = new EnumMap(MultiNameChampionsEnum.class) {
         {
-            put(MultiNameChampionsEnum.AURELIONSOL, MultiNameChampionsEnum.AURELIONSOL.getAliases());     
+            put(MultiNameChampionsEnum.AURELIONSOL, MultiNameChampionsEnum.AURELIONSOL.getAliases()); 
+            put(MultiNameChampionsEnum.BARD, MultiNameChampionsEnum.BARD.getAliases());
             put(MultiNameChampionsEnum.DRMUNDO, MultiNameChampionsEnum.DRMUNDO.getAliases());
             put(MultiNameChampionsEnum.JARVANIV, MultiNameChampionsEnum.JARVANIV.getAliases());
+            put(MultiNameChampionsEnum.KATARINA, MultiNameChampionsEnum.KATARINA.getAliases());
             put(MultiNameChampionsEnum.KOGMAW, MultiNameChampionsEnum.KOGMAW.getAliases());
             put(MultiNameChampionsEnum.LEESIN, MultiNameChampionsEnum.LEESIN.getAliases());
             put(MultiNameChampionsEnum.MASTERYI, MultiNameChampionsEnum.MASTERYI.getAliases());
