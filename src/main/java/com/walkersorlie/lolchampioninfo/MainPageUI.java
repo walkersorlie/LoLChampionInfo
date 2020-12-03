@@ -16,6 +16,7 @@ import com.walkersorlie.lolchampioninfo.Controllers.*;
 import com.walkersorlie.lolchampioninfo.Controllers.exceptions.*;
 import com.walkersorlie.lolchampioninfo.Entities.*;
 import com.walkersorlie.lolchampioninfo.TableModels.ChampionsListTableModel;
+import com.walkersorlie.lolchampioninfo.TableModels.SpellsTableModel;
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.ArrayList;
@@ -25,7 +26,9 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 /**
@@ -51,6 +54,7 @@ public class MainPageUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
         searchField = new javax.swing.JTextField();
@@ -64,12 +68,21 @@ public class MainPageUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
         searchField.setText("Search Champion...");
         searchField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchFieldActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 100;
+        gridBagConstraints.ipady = 12;
+        gridBagConstraints.insets = new java.awt.Insets(20, 15, 0, 0);
+        jPanel1.add(searchField, gridBagConstraints);
 
         searchButton.setText("Search");
         searchButton.addActionListener(new java.awt.event.ActionListener() {
@@ -77,6 +90,17 @@ public class MainPageUI extends javax.swing.JFrame {
                 searchButtonActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 18;
+        gridBagConstraints.ipady = 12;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(20, 54, 0, 0);
+        jPanel1.add(searchButton, gridBagConstraints);
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(250, 200));
 
         championsListTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -93,6 +117,19 @@ public class MainPageUI extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(championsListTable);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.ipadx = 202;
+        gridBagConstraints.ipady = 119;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(30, 18, 48, 0);
+        jPanel1.add(jScrollPane1, gridBagConstraints);
 
         selectChampionAttributeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -113,55 +150,49 @@ public class MainPageUI extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(selectChampionAttributeTable);
 
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 202;
+        gridBagConstraints.ipady = 119;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.weighty = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(30, 18, 48, 0);
+        jPanel1.add(jScrollPane2, gridBagConstraints);
+
+        displayChampionAttributeTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        displayChampionAttributeTable.setDefaultRenderer(Object.class, new MultilineTableCell());
         displayChampionAttributeTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
         displayChampionAttributeTable.setFillsViewportHeight(true);
         jScrollPane3.setViewportView(displayChampionAttributeTable);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(214, 214, 214)
-                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54)
-                .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(84, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(129, 129, 129)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 202;
+        gridBagConstraints.ipady = 119;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(89, 25, 48, 21);
+        jPanel1.add(jScrollPane3, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -238,7 +269,7 @@ public class MainPageUI extends javax.swing.JFrame {
         javax.swing.JTable table = (javax.swing.JTable)evt.getSource();
         int row = table.getSelectedRow();
         int column = table.getSelectedColumn();
-        
+   
         displayChampionAttributeTable.setModel(new DefaultTableModel());
         searchField.setText((String)table.getValueAt(row, column));     
         
@@ -259,6 +290,10 @@ public class MainPageUI extends javax.swing.JFrame {
         
         populateDisplayChampionAttributeTable(value.getCellTableModel(row, column));
     }//GEN-LAST:event_selectChampionAttributeTableMouseClicked
+
+//GEN-FIRST:event_championsListTableMouseClicked
+ 
+//GEN-LAST:event_championsListTableMouseClicked
     
     private ChampionEntity getChampionEntity(String championId) {  
         Optional<ChampionEntity> alreadyCreatedChampionEntityOptional = championEntityController.findChampionEntityById(championId);
@@ -348,16 +383,6 @@ public class MainPageUI extends javax.swing.JFrame {
      * @param tm 
      */
     private void populateDisplayChampionAttributeTable(TableModel tm) {
-//        if(tm instanceof SpellsTableModel) {
-//            System.out.println("instance");
-//            TableColumn column0 = displayChampionAttributeTable.getColumnModel().getColumn(0);
-//            column0.setPreferredWidth(40);
-//            TableColumn column1 = displayChampionAttributeTable.getColumnModel().getColumn(1);
-//            column1.setPreferredWidth(80);
-//            TableColumn column2 = displayChampionAttributeTable.getColumnModel().getColumn(2);
-//            column2.setPreferredWidth(300);
-//            displayChampionAttributeTable.setAutoResizeMode(AUTO_RESIZE_LAST_COLUMN);
-//        }
         displayChampionAttributeTable.setModel(tm);       
     }
     
@@ -414,4 +439,6 @@ public class MainPageUI extends javax.swing.JFrame {
     private ChampionPassiveEntityJpaController championPassiveEntityController;
     private ChampionSpellEntityJpaController championSpellEntityController;
     private ChampionStatsEntityJpaController championStatsEntityController;
+    
+    private MultilineTableCell multilineCellRenderer;
 }
